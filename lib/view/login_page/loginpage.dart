@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:user_side_flutter/controller/department_get_controller.dart';
 import 'package:user_side_flutter/controller/user_login_contoller.dart';
+import '../../controller/fetch_doctor_details_controller.dart';
 import '../../utils/constants/color.dart';
 import '../../utils/constants/padding.dart';
 import '../../utils/constants/sizedbox.dart';
@@ -53,6 +55,11 @@ class LoginScreen extends StatelessWidget {
                       ButtonWidget(text: 'Login',height: 60,width:250, onPressed: () async{
                        bool status= await loginprovider.userLogin(context);
                          if(status == true){
+                          // ignore: use_build_context_synchronously
+                          await Provider.of<DepartmentProvider>(context,listen: false).getDepartment();
+                          // ignore: use_build_context_synchronously
+                           await Provider.of<DoctorDetailsProvider>(context,listen: false).fechDoctorDetails();
+                        
                             // ignore: use_build_context_synchronously
                             Navigator.push(
                                 context,
@@ -60,6 +67,8 @@ class LoginScreen extends StatelessWidget {
                                   builder: (context) => const ScreenHome(),
                                 ),
                               );
+                              
+                             
                          }
                        
                       },

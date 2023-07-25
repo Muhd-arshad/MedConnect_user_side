@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:user_side_flutter/controller/user_chat_get_controller.dart';
 import 'package:user_side_flutter/view/chat_page/screen_chat.dart';
 import 'package:user_side_flutter/view/home_screen/screen_home.dart';
 import 'package:user_side_flutter/view/profile_page/screen_profile.dart';
 import 'package:user_side_flutter/view/widgets/listtilewidget.dart';
+
+import '../../controller/get_user_profile_controller.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({
@@ -26,7 +30,9 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTileWidget(
             title: 'Chat',
-            ontap: () {
+            ontap: () async{
+              await Provider.of<UserChatProvider>(context,listen: false).getChatUser();
+              // ignore: use_build_context_synchronously
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -36,7 +42,9 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTileWidget(
             title: 'Profile',
-            ontap: () {
+            ontap: () async{
+               await Provider.of<UserProfileProvider>(context,listen: false).getProfile();
+               // ignore: use_build_context_synchronously
                Navigator.push(
                   context,
                   MaterialPageRoute(

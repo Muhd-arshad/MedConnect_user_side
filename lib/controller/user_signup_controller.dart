@@ -10,31 +10,27 @@ class Usercontroller extends ChangeNotifier {
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController confirmpasswordcontroller = TextEditingController();
   Usermodel? user;
-  
+
   final formGlobalKey = GlobalKey<FormState>();
 
   Future<bool> userSignup(BuildContext context) async {
-
-    if(formGlobalKey.currentState!.validate()){
-       bool status = await  signup(
-        
+    if (formGlobalKey.currentState!.validate()) {
+      bool status = await signup(
         firstnamecontroller.text,
         secondnamecontroller.text,
         int.parse(phonenumbercontroller.text),
         emailcontroller.text,
         passwordcontroller.text,
-        confirmpasswordcontroller.text,context);
-       if(status == true){
+        confirmpasswordcontroller.text,
+        context,
+      );
+      if (status == true) {
         return true;
-       }else{
+      } else {
         return false;
-       }
+      }
     }
-    
-  
 
-   return false;
+    return false;
   }
-
-  
 }

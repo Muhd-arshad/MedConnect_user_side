@@ -8,6 +8,7 @@ import 'package:user_side_flutter/utils/constants/api_configuration.dart';
 import 'package:user_side_flutter/utils/constants/error_handling.dart';
 import 'package:user_side_flutter/utils/constants/show_snackbar.dart';
 
+const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 //192.168.10.250
 Future<dynamic> login(
   String email,
@@ -35,9 +36,10 @@ Future<dynamic> login(
         });
     if (response.statusCode == 200) {
       log('Request succeeded!');
-      const FlutterSecureStorage secureStorage = FlutterSecureStorage();
-      secureStorage.write(
-          key: 'Token', value: jsonDecode(response.body)['token']);
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      String token = jsonResponse['token'];
+      secureStorage.write(key: 'token', value: token);
+      log(token);
       return true;
     } else {
       // Request failed

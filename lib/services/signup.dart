@@ -6,16 +6,19 @@ import 'package:user_side_flutter/model/user_model.dart';
 import 'package:user_side_flutter/utils/constants/api_configuration.dart';
 import 'package:user_side_flutter/utils/constants/error_handling.dart';
 import 'package:user_side_flutter/utils/constants/show_snackbar.dart';
-//10.4.3.105 
+//10.4.3.105
+
 Future<dynamic> signup(
-    String firstName,
-    String secondName,
-    int phoneNumber,
-    String email,
-    String password,
-    String confirmPassword,
-    BuildContext context) async {
+  String firstName,
+  String secondName,
+  int phoneNumber,
+  String email,
+  String password,
+  String confirmPassword,
+  BuildContext context,
+) async {
   http.Response? response;
+
   Map<String, dynamic> payload = {
     'value': {
       'firstName': firstName,

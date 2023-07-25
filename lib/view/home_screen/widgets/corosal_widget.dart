@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
+import 'package:user_side_flutter/controller/schedule_apoinment.dart';
 import 'package:user_side_flutter/utils/constants/color.dart';
 import 'package:user_side_flutter/view/book_doctor/screen_book_doctor.dart';
+import '../../../controller/fetch_doctor_details_controller.dart';
 import '../../../utils/constants/sizedbox.dart';
 import '../../widgets/buttonwidget.dart';
 import '../../widgets/customtextwidget.dart';
@@ -13,6 +16,7 @@ class CoroselSliderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final doctorDetailsProvider = context.read<DoctorDetailsProvider>();
     return SizedBox(
       //height: 200,
       width: 350,
@@ -20,7 +24,7 @@ class CoroselSliderWidget extends StatelessWidget {
         height: 230,
         child: CarouselSlider.builder(
           enableAutoSlider: true,
-           unlimitedMode: true,
+          unlimitedMode: true,
           autoSliderTransitionTime: const Duration(seconds: 2),
           itemCount: 4,
           slideBuilder: (index) {
@@ -36,14 +40,16 @@ class CoroselSliderWidget extends StatelessWidget {
                         Container(
                           height: 200,
                           width: 150,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
                                 bottomLeft: Radius.circular(10),
                                 topLeft: Radius.circular(10)),
                             image: DecorationImage(
-                                image: AssetImage(
-                                  'assets/images/c1.jpeg',
-                                ),
+                                image: NetworkImage(doctorDetailsProvider
+                                    .listDoctorModel!
+                                    .doctors[index]
+                                    .profilePhoto
+                                    .toString()),
                                 fit: BoxFit.cover),
                           ),
                         ),
@@ -51,33 +57,35 @@ class CoroselSliderWidget extends StatelessWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Row(
+                            Row(
                               children: [
-                                TextWidget(
+                                const TextWidget(
                                   text: 'Name :',
                                   size: 13,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 width10,
                                 TextWidget(
-                                  text: 'Dr.Ramees',
+                                  text: doctorDetailsProvider.listDoctorModel!
+                                      .doctors[index].firstName,
                                   fontWeight: FontWeight.bold,
                                   size: 13,
                                 ),
                               ],
                             ),
                             height10,
-                            const Row(
+                            Row(
                               children: [
                                 width10,
-                                TextWidget(
+                                const TextWidget(
                                   text: 'Department :',
                                   size: 13,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 width10,
                                 TextWidget(
-                                  text: 'Child Care',
+                                  text: doctorDetailsProvider.listDoctorModel!
+                                      .doctors[index].departmentName,
                                   size: 13,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -86,8 +94,19 @@ class CoroselSliderWidget extends StatelessWidget {
                             height30,
                             ButtonWidget(
                                 text: 'Book',
-                                onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const ScreenBooking(),),);
+                                onPressed: () async{
+                                await  Provider.of<ScheduleApoinmentProvider>(context,listen: false).scheduleApoinmet(doctorDetailsProvider.listDoctorModel!.doctors[index].idNumber!.toString());
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ScreenBooking(
+                                        
+                                        doctorModel: doctorDetailsProvider
+                                            .listDoctorModel!.doctors[index],
+                                      ),
+                                    ),
+                                  );
                                 },
                                 height: 30,
                                 width: 100)

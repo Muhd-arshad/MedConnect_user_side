@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:user_side_flutter/services/otp_verification.dart';
+import 'package:user_side_flutter/view/login_page/loginpage.dart';
 
 import '../../utils/constants/color.dart';
 import '../../utils/constants/padding.dart';
 import '../../utils/constants/sizedbox.dart';
-import '../home_screen/screen_home.dart';
 import '../widgets/buttonwidget.dart';
 import '../widgets/customtextwidget.dart';
 import '../widgets/primarywidget.dart';
@@ -95,7 +95,7 @@ class ScreenOtpPage extends StatelessWidget {
                           Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ScreenHome(),
+                          builder: (context) => const LoginScreen(),
                         ),
                       );
                       }

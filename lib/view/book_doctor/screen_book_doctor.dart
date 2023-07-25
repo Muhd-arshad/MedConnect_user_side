@@ -1,16 +1,28 @@
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:user_side_flutter/controller/schedule_apoinment.dart';
 import 'package:user_side_flutter/utils/constants/padding.dart';
 import 'package:user_side_flutter/utils/constants/sizedbox.dart';
 import 'package:user_side_flutter/view/book_doctor/widgets/screen_apoiments.dart';
 import 'package:user_side_flutter/view/widgets/customtextwidget.dart';
 import 'package:user_side_flutter/view/widgets/primarywidget.dart';
 
+import '../../model/doctor_list_model.dart';
+
 class ScreenBooking extends StatelessWidget {
-  const ScreenBooking({super.key});
+  final Doctor doctorModel;
+ 
+  const ScreenBooking({super.key,required this.doctorModel});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    log(doctorModel.id.toString());
+     final paymentNotifier = Provider.of<ScheduleApoinmentProvider>(context, listen: false);
+    paymentNotifier.initializeRazorpay();
+    return  Scaffold(
       body: PrimaryWidget(
         widget: SafeArea(
           child: SingleChildScrollView(
@@ -20,7 +32,7 @@ class ScreenBooking extends StatelessWidget {
                 height20,
                 CircleAvatar(
                   radius: 80,
-                  backgroundImage: AssetImage('assets/images/c1.jpeg'),
+                  backgroundImage: NetworkImage(doctorModel.profilePhoto!),
                 ),
                 height10,
                 Padding(
@@ -29,24 +41,24 @@ class ScreenBooking extends StatelessWidget {
                     children: [
                       height10,
                       TextWidget(
-                        text: 'Child Care Expert',
+                        text: doctorModel.departmentName,
                         size: 19,
                         colorText: Colors.blueGrey,
                       ),
                       height10,
                       TextWidget(
-                        text: 'Dr.Ramees',
+                        text: '${doctorModel.firstName} ${doctorModel.lastName}',
                         size: 25,
                         fontWeight: FontWeight.bold,
                       ),
                       height10,
                       TextWidget(
-                        text: '10 years Of Experiance',
+                        text: '${doctorModel.experience} years Of Experiance',
                         size: 19,
                         colorText: Colors.blueGrey,
                       ),
                       height30,
-                      Align(
+                   const   Align(
                         alignment: Alignment.centerLeft,
                         child: TextWidget(
                           text: 'Schedule Appointment',
@@ -55,7 +67,9 @@ class ScreenBooking extends StatelessWidget {
                         ),
                       ),
                       height20,
-                      ScreenApointment()
+                      
+                      ScreenApointment(id: doctorModel.id!)
+
                     ],
                   ),
                 ),
