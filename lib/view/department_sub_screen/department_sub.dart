@@ -62,7 +62,8 @@ class ScreenDepartmentSub extends StatelessWidget {
                           await Provider.of<ScheduleApoinmentProvider>(context,
                                   listen: false)
                               .scheduleApoinmet(
-                            Provider.of<DoctorDetailsProvider>(context,listen: false)
+                            Provider.of<DoctorDetailsProvider>(context,
+                                    listen: false)
                                 .listDoctorModel!
                                 .doctors[index]
                                 .id!,
@@ -91,8 +92,6 @@ class ScreenDepartmentSub extends StatelessWidget {
                         title: TextWidget(
                           text:
                               '${doctorListprovider.listdoc[index].firstName} ${doctorListprovider.listdoc[index].lastName}',
-
-                          // '${Provider.of<DoctorDetailsProvider>(context).listDoctorModel!.doctors[index].firstName} ${Provider.of<DoctorDetailsProvider>(context).listDoctorModel!.doctors[index].lastName}',
                           size: 18,
                           fontWeight: FontWeight.bold,
                         ),

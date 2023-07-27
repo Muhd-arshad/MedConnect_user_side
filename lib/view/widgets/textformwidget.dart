@@ -32,6 +32,7 @@ class TextformFeildWidget extends StatelessWidget {
             }
             return null;
           },
+          
           autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: type,
           controller: controller,

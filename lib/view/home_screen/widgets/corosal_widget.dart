@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,7 @@ class CoroselSliderWidget extends StatelessWidget {
       child: SizedBox(
         height: 230,
         child: CarouselSlider.builder(
-          enableAutoSlider: true,
+            enableAutoSlider: true,
           unlimitedMode: true,
           autoSliderTransitionTime: const Duration(seconds: 2),
           itemCount: 4,
@@ -94,14 +95,21 @@ class CoroselSliderWidget extends StatelessWidget {
                             height30,
                             ButtonWidget(
                                 text: 'Book',
-                                onPressed: () async{
-                                await  Provider.of<ScheduleApoinmentProvider>(context,listen: false).scheduleApoinmet(doctorDetailsProvider.listDoctorModel!.doctors[index].idNumber!.toString());
+                                onPressed: () async {
+                                
+                                Provider.of<ScheduleApoinmentProvider>(
+                                          context,
+                                          listen: false)
+                                      .scheduleApoinmet(doctorDetailsProvider
+                                          .listDoctorModel!
+                                          .doctors[index]
+                                          .idNumber!
+                                          .toString());
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ScreenBooking(
-                                        
                                         doctorModel: doctorDetailsProvider
                                             .listDoctorModel!.doctors[index],
                                       ),

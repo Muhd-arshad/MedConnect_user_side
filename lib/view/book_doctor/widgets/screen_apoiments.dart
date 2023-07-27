@@ -159,6 +159,9 @@ class ScreenApointment extends StatelessWidget {
                                           const  ScreenPaymentSucsess(),
                                       ),
                                     );
+                                  }else{
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pop(context);
                                   }
                                 },
                                 child: const Text('Wallet'),

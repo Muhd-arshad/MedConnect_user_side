@@ -33,6 +33,8 @@ class DrawerWidget extends StatelessWidget {
             ontap: () async{
               await Provider.of<UserChatProvider>(context,listen: false).getChatUser();
               // ignore: use_build_context_synchronously
+              await Provider.of<UserProfileProvider>(context,listen: false).getProfile();
+              // ignore: use_build_context_synchronously
               Navigator.push(
                   context,
                   MaterialPageRoute(

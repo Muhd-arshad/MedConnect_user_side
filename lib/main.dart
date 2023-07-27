@@ -10,6 +10,7 @@ import 'package:user_side_flutter/controller/user_login_contoller.dart';
 import 'package:user_side_flutter/controller/user_signup_controller.dart';
 import 'package:user_side_flutter/view/login_page/loginpage.dart';
 
+import 'controller/doctor_message_service_post_controller.dart';
 import 'controller/fetch_doctor_details_controller.dart';
 
 void main() {
@@ -49,6 +50,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => UserChatProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => GetDoctorMessageProvider(),
+        ),
+      
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
