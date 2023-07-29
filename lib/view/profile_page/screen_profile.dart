@@ -28,8 +28,9 @@ class ScreenProfile extends StatelessWidget {
         widget: Padding(
           padding: horizontal10,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              height10,
+              
               Provider.of<UserProfileProvider>(context, listen: false)
                           .userDetailsModel!
                           .userDetails

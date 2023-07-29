@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -16,7 +15,6 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
   List<String> listLastTime = [''];
   List<String> timeschedue = [''];
   String? time;
-
   BookingDetailsModel? bookingDetailsModel;
 // bool isloading =false;
   DateTime? get selectedDate => selecteddate;
@@ -32,6 +30,8 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
   }
 
   Future<dynamic> scheduleApoinmet(String id) async {
+    notifyListeners();
+    log('calling schedule');
     listStartingTime.clear();
     listLastTime.clear();
     Map<String, dynamic> payload = {"doctorId": id};
@@ -39,11 +39,14 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
     String url = Apiconfiguration.baseurl + Apiconfiguration.bookingDetails;
 
     try {
-      http.Response response = await http.post(Uri.parse(url),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(payload));
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(payload),
+      );
+      log('Response Status Code: ${response.statusCode}');
       log(response.body);
 
       if (response.statusCode == 200) {
@@ -57,11 +60,15 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
         listLastTime.addAll(
             bookingDetailsModel!.bookingDetails.map((e) => e.endingTime!));
         time =
-            '${listStartingTime[listStartingTime.length - 1]}  ${listLastTime[listLastTime.length - 1]}';
+            '${listStartingTime[listStartingTime.length - 1]} to ${listLastTime[listLastTime.length - 1]}';
         timeschedue.add(time!);
+        log('calling schedule1');
+        
         return bookingDetailsModel;
       }
+     
     } catch (e) {
+     
       log('failed with an exception $e');
     }
   }
@@ -79,22 +86,22 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response1) {
-     isSuccess = true;
-     notifyListeners();
-  
+    isSuccess = true;
+    notifyListeners();
+
     dynamic response = {
       // The success response from Razorpay.
       'razorpay_payment_id': response1.paymentId,
       'razorpay_order_id': response1.orderId,
       'razorpay_signature': response1.signature,
     };
-   
+
     verifyPayment(
       bookingDetailsModel!
           .bookingDetails[bookingDetailsModel!.bookingDetails.length - 1].id!,
       response,
     );
-    disposeRazorpay();
+   
     log("Payment Successful: ${response1.paymentId}");
   }
 
@@ -108,7 +115,7 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
     log("External Wallet: ${response.walletName}");
   }
 
-  void openCheckout(OrderDetailsModel order) {
+ Future< void> openCheckout(OrderDetailsModel order) async{
     log(order.order.id);
 
     var options = {
@@ -129,6 +136,11 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
     } catch (e) {
       debugPrint("Error: ${e.toString()}");
     }
+  }
+  @override
+  void dispose() {
    
+    disposeRazorpay();
+    super.dispose();
   }
 }

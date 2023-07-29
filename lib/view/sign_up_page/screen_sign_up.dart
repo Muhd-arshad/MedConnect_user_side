@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -73,12 +72,14 @@ class ScreenSignUp extends StatelessWidget {
                         controller: signupProvider.confirmpasswordcontroller,
                         labelText: 'Confirm Password'),
                     height20,
+                    signupProvider.isloading == true ? const Center(child:  CircularProgressIndicator()):
                     ButtonWidget(
                         text: 'Sign Up',
-                        onPressed: () async {
+                        onPressed: () async { 
+                          signupProvider.isloading = true;
                           bool status =
                               await signupProvider.userSignup(context);
-                          log(status.toString());
+                        
                           if (status == true) {
                             // ignore: use_build_context_synchronously
                             Navigator.push(

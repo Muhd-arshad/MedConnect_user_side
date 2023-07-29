@@ -13,29 +13,16 @@ import '../../../utils/constants/color.dart';
 
 class ScreenApointment extends StatelessWidget {
   const ScreenApointment({super.key, required this.id});
-  final String id;
+   final String id;
+ 
   @override
   Widget build(BuildContext context) {
-    // final paymentNotifier =
-    //     Provider.of<ScheduleApoinmentProvider>(context, listen: false);
-    // paymentNotifier.initializeRazorpay();
 
-    // TextEditingController datecontroller = TextEditingController();
     return Consumer<ScheduleApoinmentProvider>(
         builder: (context, sheduleApoinmet, child) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // TextformFeildWidget(
-          //   controller: datecontroller,
-          //   labelText: 'Select Date',
-          // ),
-          // height20,
-
-          // TextformFeildWidget(
-          //          controller: datecontroller,
-          //          labelText: 'Time',
-          //         ),
           height10,
           Container(
             height: 65,
@@ -52,15 +39,11 @@ class ScreenApointment extends StatelessWidget {
                 ),
               ],
             ),
-            child: sheduleApoinmet.bookingDetailsModel!.bookingDetails.isEmpty
+            child:
+            sheduleApoinmet.bookingDetailsModel!.bookingDetails.isEmpty
                 ? const Center(child: Text('No apoinmets scheduled'))
                 : TextButton.icon(
                     onPressed: () async {
-                      // log('shechule apoinment last date ==== ${sheduleApoinmet
-                      //       .bookingDetailsModel!
-                      //       .bookingDetails[sheduleApoinmet.bookingDetailsModel!
-                      //               .bookingDetails.length -
-                      //           1].date}');
                       final selectedDateTemp = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
@@ -87,7 +70,7 @@ class ScreenApointment extends StatelessWidget {
                     label: Text(
                       sheduleApoinmet.selectedDate == null
                           ? "select date"
-                          : DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                          : DateFormat("yyyy-MM-dd")
                               .format(sheduleApoinmet.selectedDate!),
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.6), fontSize: 15),
@@ -186,7 +169,8 @@ class ScreenApointment extends StatelessWidget {
                                         :
 
                                         // ignore: use_build_context_synchronously
-                                        paymentProvider.openCheckout(order);
+                                       paymentProvider.openCheckout(order);
+                                        log(paymentProvider.isSuccess.toString());
 
                                     if (paymentProvider.isSuccess == true) {
                                       // ignore: use_build_context_synchronously
@@ -197,9 +181,10 @@ class ScreenApointment extends StatelessWidget {
                                               const ScreenPaymentSucsess(),
                                         ),
                                       );
+                                      paymentProvider.isSuccess = false;
                                     }
 
-                                    paymentProvider.isSuccess = false;
+                                    
                                     // paymentProvider.disposeRazorpay();
                                   },
                                   child: const Text('Other'),

@@ -29,6 +29,7 @@ class ScreenApointments extends StatelessWidget {
           padding: horizontal10,
           child: Column(
             children: [
+              height10,
               Expanded(
                 child: Consumer<GetbookingApoinmetnsProvider>(
                   builder: (context, getbookingprovider, child) {

@@ -26,7 +26,7 @@ class ScreenPaymentSucsess extends StatelessWidget {
               const TextWidget(text: 'Your Payments is Succesfull',fontWeight: FontWeight.bold,),
               height30,
               ButtonWidget(text: 'Go Home', onPressed:(){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ScreenHome(),),);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const ScreenHome(),), (route) => false,);
               }, height: 60, width: 200)
 
           ],

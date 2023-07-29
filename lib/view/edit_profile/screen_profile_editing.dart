@@ -26,7 +26,7 @@ class ScreenEditingProfile extends StatelessWidget {
     return Scaffold(
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(60),
-          child: AppbarWidget(title: 'Chat')),
+          child: AppbarWidget(title: ' Edit Profile')),
       body: SingleChildScrollView(
         child: PrimaryWidget(
             widget: Padding(
@@ -34,7 +34,9 @@ class ScreenEditingProfile extends StatelessWidget {
           child: Consumer<UserProfileProvider>(
               builder: (context, userprofileProvier, child) {
             return Column(
+             // mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: MediaQuery.sizeOf(context).height *0.055,),
                 userprofileProvier.userDetailsModel!.userDetails.profilePhoto ==
                         null
                     ? const CircleAvatar(
@@ -56,12 +58,7 @@ class ScreenEditingProfile extends StatelessWidget {
                     height: 45,
                     width: 145),
                 height15,
-                // SizedBox(
-                //   height: MediaQuery.of(context).size.height *0.48,
-                //   child: ListView.separated(itemBuilder: (context, index) {
-                //     return TextformFeildWidget(controller:namecontroller,labelText: textlist[index], );
-                //   }, separatorBuilder: (context, index) => height10, itemCount: textlist.length),
-                // ),
+               
                 TextformFeildWidget(
                   controller: userprofileProvier.namecontroller,
                   labelText: 'FirstName',

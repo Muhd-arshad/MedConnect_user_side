@@ -10,10 +10,12 @@ class Usercontroller extends ChangeNotifier {
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController confirmpasswordcontroller = TextEditingController();
   Usermodel? user;
-
+  bool? isloading = false;
   final formGlobalKey = GlobalKey<FormState>();
 
   Future<bool> userSignup(BuildContext context) async {
+    isloading =true;
+    notifyListeners();
     if (formGlobalKey.currentState!.validate()) {
       bool status = await signup(
         firstnamecontroller.text,
@@ -24,9 +26,14 @@ class Usercontroller extends ChangeNotifier {
         confirmpasswordcontroller.text,
         context,
       );
+
       if (status == true) {
+        isloading = false;
+        notifyListeners();
         return true;
       } else {
+        isloading =false;
+        notifyListeners();
         return false;
       }
     }

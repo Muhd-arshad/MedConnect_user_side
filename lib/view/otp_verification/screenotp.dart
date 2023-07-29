@@ -9,7 +9,9 @@ import '../../utils/constants/sizedbox.dart';
 import '../widgets/buttonwidget.dart';
 import '../widgets/customtextwidget.dart';
 import '../widgets/primarywidget.dart';
- TextEditingController otpPinput = TextEditingController();
+
+TextEditingController otpPinput = TextEditingController();
+
 class ScreenOtpPage extends StatelessWidget {
   const ScreenOtpPage({super.key});
 
@@ -38,7 +40,7 @@ class ScreenOtpPage extends StatelessWidget {
         color: Colors.white,
       ),
     );
-   
+
     return Scaffold(
       body: PrimaryWidget(
         widget: SingleChildScrollView(
@@ -70,11 +72,11 @@ class ScreenOtpPage extends StatelessWidget {
                   height30,
                   Pinput(
                     validator: (value) {
-                     if(value?.length!= 6 || value == null  ){
-                      return 'please Enter the  6-digit otp';
-                     }else{
-                      return null;
-                     }
+                      if (value?.length != 6 || value == null) {
+                        return 'please Enter the  6-digit otp';
+                      } else {
+                        return null;
+                      }
                     },
                     controller: otpPinput,
                     length: 6,
@@ -82,24 +84,21 @@ class ScreenOtpPage extends StatelessWidget {
                     focusedPinTheme: focusedPinTheme,
                     submittedPinTheme: submittedPinTheme,
                     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                    
-                   
                   ),
                   height30,
                   ButtonWidget(
                     text: 'Verify',
-                    onPressed: () async{
-                     bool status= await otpInput(otpPinput.text ,context);
-                      if(status == true){
-                          // ignore: use_build_context_synchronously
-                          Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
+                    onPressed: () async {
+                      bool status = await otpInput(otpPinput.text, context);
+                      if (status == true) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                            (route) => false);
                       }
-                     
                     },
                     height: 50,
                     width: 140,

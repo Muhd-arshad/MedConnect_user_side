@@ -1,4 +1,8 @@
 
+
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
@@ -93,18 +97,15 @@ class CoroselSliderWidget extends StatelessWidget {
                               ],
                             ),
                             height30,
+                            // Provider.of<ScheduleApoinmentProvider>(context).isloading ==true ? const Center(child: CircularProgressIndicator(),):
                             ButtonWidget(
                                 text: 'Book',
                                 onPressed: () async {
-                                
-                                Provider.of<ScheduleApoinmentProvider>(
-                                          context,
-                                          listen: false)
-                                      .scheduleApoinmet(doctorDetailsProvider
-                                          .listDoctorModel!
-                                          .doctors[index]
-                                          .idNumber!
-                                          .toString());
+                                log('book button clicked');
+                                   await Provider.of<ScheduleApoinmentProvider>(context,listen: false).scheduleApoinmet(doctorDetailsProvider.listDoctorModel!.doctors[index].id!);
+                                   // ignore: use_build_context_synchronously
+                                  //  Provider.of<ScheduleApoinmentProvider>(context,listen: false).isloading =true;
+                                   
                                   // ignore: use_build_context_synchronously
                                   Navigator.push(
                                     context,
@@ -115,6 +116,7 @@ class CoroselSliderWidget extends StatelessWidget {
                                       ),
                                     ),
                                   );
+                                 
                                 },
                                 height: 30,
                                 width: 100)
