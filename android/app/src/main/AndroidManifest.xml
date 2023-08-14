@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="user_side_flutter"
+        android:label="Med Connect"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

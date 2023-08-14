@@ -8,9 +8,10 @@ class ListviewForProfileWidget extends StatelessWidget {
   final Icon icon;
   final Function()? ontap;
   final String? subtitle;
+   final Icon? icons;
 
   const ListviewForProfileWidget({
-    super.key, required this.title, required this.icon, this.ontap, this.subtitle,
+    super.key, required this.title, required this.icon, this.ontap, this.subtitle, this.icons,
   });
 
   @override
@@ -24,7 +25,7 @@ class ListviewForProfileWidget extends StatelessWidget {
         leading: icon,
         title: TextWidget(text: title,size: 18,fontWeight: FontWeight.bold,),
         subtitle:subtitle== null ? null :TextWidget(text: subtitle,),
-        trailing: const Icon(Icons.arrow_forward_ios),
+        trailing: icons,
       ),
     );
   }

@@ -28,7 +28,6 @@ class GetDoctorMessageProvider extends ChangeNotifier {
         body: jsonEncode(payload),
         headers: headers
       );
-      log('response.body ========${response.body}');
       if(response.statusCode == 200){
         log('Get metheod successfull');
         //Map<String,dynamic> data =jsonDecode(response.body) as Map<String,dynamic>;
@@ -45,13 +44,12 @@ class GetDoctorMessageProvider extends ChangeNotifier {
     dynamic key = await readToken();
     Map<String, dynamic> payload = {
       "to": doctorId,
-      "message": msgController.text
+      "message": message
     };
     final headers = {
       'Authorization': 'Bearer $key', // Add the token to the headers
       'Content-Type': 'application/json'
     };
-    log('msg====${msgController.text}');
     String url = Apiconfiguration.baseurl + Apiconfiguration.sendMsg;
     // String url = 'http://10.4.3.105:8080/api/message/addMessage';
     try {
@@ -94,13 +92,16 @@ String serverUrl =Apiconfiguration.baseurl;
   }
 
   void sendMessage(String recipientUserId, String message) {
-    log('send messge callinggg == =');
     if (message.isNotEmpty) {
+
       // Emit 'send-msg' event to the server with message data
       socket.emit('send-msg', {
         'to': recipientUserId,
         'message': message,
       });
+      _message='';
+      notifyListeners();
+
     }
   }
   void scrollToBottom() {
@@ -113,6 +114,17 @@ String serverUrl =Apiconfiguration.baseurl;
     }
     notifyListeners();
   }
+    String _message = '';
+
+  String get message => _message;
+
+  void setMessage(String message) {
+    _message = message;
+    notifyListeners(); // Notify listeners about the change
+  }
+
+  bool get isMessageEmpty => _message.isEmpty;
+
   @override
   void dispose() {
     socket.dispose();

@@ -38,57 +38,78 @@ class ScreenChat extends StatelessWidget {
             Expanded(
               child: Consumer<UserChatProvider>(
                   builder: (context, userChatProvider, child) {
-                return ListView.separated(
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: cBlack.withOpacity(0.3),
-                              offset: const Offset(0, 2),
-                              spreadRadius: 0,
-                              blurRadius: 5,
-                            )
-                          ],
-                          color: cwhite,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: ListTile(
-                        onTap: ()async { 
-                          await Provider.of<GetDoctorMessageProvider>(context,listen: false).getMessage( userChatProvider
-                                  .userChatModel!.chattableDoctors[index].id);
-                                   // ignore: use_build_context_synchronously
-                             Provider.of<GetDoctorMessageProvider>(context,listen: false).initSocketConnection(Provider.of<UserProfileProvider>(context,listen: false).userDetailsModel!.userDetails.id!);
-                             
-                          // ignore: use_build_context_synchronously
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScreenMessage(
-                              chattableDoctor: userChatProvider
-                                  .userChatModel!.chattableDoctors[index],
+                return userChatProvider.userChatModel!.chattableDoctors.isEmpty
+                    ? const Center(
+                        child: TextWidget(
+                          text: 'Sorry No chatable Doctor found',
+                          size: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : ListView.separated(
+                        itemBuilder: (context, index) {
+                          return Container(
+                            height: 60,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: cBlack.withOpacity(0.3),
+                                  offset: const Offset(0, 2),
+                                  spreadRadius: 0,
+                                  blurRadius: 5,
+                                )
+                              ],
+                              color: cwhite,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ),
-                        );
-                          
+                            child: ListTile(
+                              onTap: () async {
+                                await Provider.of<GetDoctorMessageProvider>(
+                                        context,
+                                        listen: false)
+                                    .getMessage(userChatProvider.userChatModel!
+                                        .chattableDoctors[index].id);
+                                // ignore: use_build_context_synchronously
+                                Provider.of<GetDoctorMessageProvider>(context,
+                                        listen: false)
+                                    .initSocketConnection(
+                                        // ignore: use_build_context_synchronously
+                                        Provider.of<UserProfileProvider>(
+                                                context,
+                                                listen: false)
+                                            .userDetailsModel!
+                                            .userDetails
+                                            .id!);
+
+                                // ignore: use_build_context_synchronously
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ScreenMessage(
+                                      chattableDoctor: userChatProvider
+                                          .userChatModel!
+                                          .chattableDoctors[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(userChatProvider
+                                    .userChatModel!
+                                    .chattableDoctors[index]
+                                    .profilePhoto),
+                              ),
+                              title: TextWidget(
+                                text:
+                                    'Dr.${userChatProvider.userChatModel!.chattableDoctors[index].firstName} ${userChatProvider.userChatModel!.chattableDoctors[index].lastName}',
+                              ),
+                            ),
+                          );
                         },
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(userChatProvider
-                              .userChatModel!
-                              .chattableDoctors[index]
-                              .profilePhoto),
-                        ),
-                        title: TextWidget(
-                          text:
-                              'Dr.${userChatProvider.userChatModel!.chattableDoctors[index].firstName} ${userChatProvider.userChatModel!.chattableDoctors[index].lastName}',
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => height10,
-                  itemCount:
-                      userChatProvider.userChatModel!.chattableDoctors.length,
-                );
+                        separatorBuilder: (context, index) => height10,
+                        itemCount: userChatProvider
+                            .userChatModel!.chattableDoctors.length,
+                      );
               }),
             )
           ],

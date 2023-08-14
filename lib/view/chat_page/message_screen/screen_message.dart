@@ -48,7 +48,7 @@ class ScreenMessage extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.74,
                     child: ListView.separated(
-                      controller: getDoctorProvider.scrollController,
+                        controller: getDoctorProvider.scrollController,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: horizontal10,
@@ -100,7 +100,10 @@ class ScreenMessage extends StatelessWidget {
                           elevation: 4,
                           shadowColor: cBlack,
                           child: TextField(
-                            controller: getDoctorProvider.msgController,
+                            onChanged: (value) {
+                              getDoctorProvider.setMessage(value);
+                            },
+                           controller: getDoctorProvider.msgController,
                             decoration: InputDecoration(
                               hintText: 'Type Messages',
                               border: OutlineInputBorder(
@@ -108,7 +111,9 @@ class ScreenMessage extends StatelessWidget {
                                   borderSide: BorderSide.none),
                               fillColor: cwhite,
                               filled: true,
-                              suffixIcon: IconButton(
+                              suffixIcon: 
+                              getDoctorProvider.isMessageEmpty ? null :
+                              IconButton(
                                 onPressed: () async {
                                   await getDoctorProvider
                                       .sendMsg(chattableDoctor.id);

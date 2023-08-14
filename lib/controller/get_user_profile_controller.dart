@@ -20,7 +20,7 @@ class UserProfileProvider extends ChangeNotifier {
   TextEditingController emailcontroller = TextEditingController();
   UserDetailsModel? userDetailsModel;
   File? photo;
-   String? profilepath;
+  String? profilepath;
   Future<dynamic> getProfile() async {
     dynamic key = await readToken();
     final headers = {
@@ -51,8 +51,6 @@ class UserProfileProvider extends ChangeNotifier {
         userDetailsModel!.userDetails.phoneNumber!.toString();
   }
 
- 
-
   Future<void> imagePicker() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -62,39 +60,42 @@ class UserProfileProvider extends ChangeNotifier {
       final phototemp = File(image.path);
       photo = phototemp;
       profilepath = await uploadToCloudinery(photo!.path);
-    
-      userDetailsModel!.userDetails.profilePhoto = profilepath.toString();
-        log('$profilepath');
+
+      userDetailsModel!.userDetails.profilePhoto = profilepath;
+      log('$profilepath');
 
       notifyListeners();
     }
   }
-  Future<void>editProfilePhoto()async{
+
+  Future<void> editProfilePhoto() async {
+    profilepath = userDetailsModel!.userDetails.profilePhoto ;
     await profilePhotoEdit(profilepath!);
   }
 
-  Future<dynamic> uploadToCloudinery(String imagepath) async{
+  Future<dynamic> uploadToCloudinery(String imagepath) async {
     final cloudinery = Cloudinary.signedConfig(
       apiKey: '331149413215856',
       apiSecret: 'DuAkn5qC3Rr2zBWv1ZVjDGHDVA8',
       cloudName: 'dupsc4cu4',
     );
-    try{
-     CloudinaryResponse response = await cloudinery.upload(
-      file: imagepath,
-      fileBytes: File(imagepath).readAsBytesSync(),
-      resourceType: CloudinaryResourceType.image,
-     );
-     if(response.statusCode == 200){
-       log('Sucessfull');
-       String imageUrl = response.secureUrl.toString();
-       return imageUrl;
-     }
-    }catch(e){
+    try {
+      CloudinaryResponse response = await cloudinery.upload(
+        file: imagepath,
+        fileBytes: File(imagepath).readAsBytesSync(),
+        resourceType: CloudinaryResourceType.image,
+      );
+      if (response.statusCode == 200) {
+        log('Sucessfull');
+        String imageUrl = response.secureUrl.toString();
+        return imageUrl;
+      }
+    } catch (e) {
       log('failed with an exception in cloudinery upload $e');
     }
   }
-   Future<void> editProfileDetails() async {
+
+  Future<void> editProfileDetails() async {
     await profileDetails(
       namecontroller.text,
       secondnamecontroller.text,
@@ -105,8 +106,8 @@ class UserProfileProvider extends ChangeNotifier {
     userDetailsModel!.userDetails.firstName = namecontroller.text;
     userDetailsModel!.userDetails.lastName = secondnamecontroller.text;
     userDetailsModel!.userDetails.email = emailcontroller.text;
-    userDetailsModel!.userDetails.phoneNumber = int.parse(phoneNumbercontroller.text);
+    userDetailsModel!.userDetails.phoneNumber =
+        int.parse(phoneNumbercontroller.text);
     notifyListeners();
   }
-  
 }

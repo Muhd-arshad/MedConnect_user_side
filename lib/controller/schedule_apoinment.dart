@@ -74,7 +74,8 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
   }
 
   Razorpay razorpay = Razorpay();
-  bool? isSuccess = false;
+   bool isSucess = false;
+
   void initializeRazorpay() {
     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -86,8 +87,7 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response1) {
-    isSuccess = true;
-    notifyListeners();
+    
 
     dynamic response = {
       // The success response from Razorpay.
@@ -101,7 +101,6 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
           .bookingDetails[bookingDetailsModel!.bookingDetails.length - 1].id!,
       response,
     );
-   
     log("Payment Successful: ${response1.paymentId}");
   }
 
@@ -139,7 +138,6 @@ class ScheduleApoinmentProvider extends ChangeNotifier {
   }
   @override
   void dispose() {
-   
     disposeRazorpay();
     super.dispose();
   }

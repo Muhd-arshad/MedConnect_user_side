@@ -8,16 +8,16 @@ import 'package:user_side_flutter/services/wallet_post_service.dart';
 import 'package:user_side_flutter/utils/constants/sizedbox.dart';
 import 'package:user_side_flutter/view/payments_sucess/screen_payment_sucsess.dart';
 import 'package:user_side_flutter/view/widgets/buttonwidget.dart';
+import 'package:user_side_flutter/view/widgets/customtextwidget.dart';
 import '../../../services/inilize_razorpay_post_service.dart';
 import '../../../utils/constants/color.dart';
 
 class ScreenApointment extends StatelessWidget {
   const ScreenApointment({super.key, required this.id});
-   final String id;
- 
+  final String id;
+
   @override
   Widget build(BuildContext context) {
-
     return Consumer<ScheduleApoinmentProvider>(
         builder: (context, sheduleApoinmet, child) {
       return Column(
@@ -39,9 +39,8 @@ class ScreenApointment extends StatelessWidget {
                 ),
               ],
             ),
-            child:
-            sheduleApoinmet.bookingDetailsModel!.bookingDetails.isEmpty
-                ? const Center(child: Text('No apoinmets scheduled'))
+            child: sheduleApoinmet.bookingDetailsModel!.bookingDetails.isEmpty
+                ? const Center(child: Text('No Date Slots Available'))
                 : TextButton.icon(
                     onPressed: () async {
                       final selectedDateTemp = await showDatePicker(
@@ -77,7 +76,6 @@ class ScreenApointment extends StatelessWidget {
                     ),
                   ),
           ),
-
           height20,
           Container(
             height: 65,
@@ -96,17 +94,32 @@ class ScreenApointment extends StatelessWidget {
             ),
             child: Center(
               child: sheduleApoinmet.bookingDetailsModel!.bookingDetails.isEmpty
-                  ? const Text('No apoinments schedule')
+                  ? const Text('No Time Slots Available')
                   : Text(sheduleApoinmet.time!),
             ),
           ),
-
           height30,
           ButtonWidget(
               text: 'Book Now',
               onPressed: sheduleApoinmet
                       .bookingDetailsModel!.bookingDetails.isEmpty
-                  ? () {}
+                  ? () {
+                      return ScaffoldMessenger.of(context)..removeCurrentSnackBar()..showSnackBar(
+                        SnackBar(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          backgroundColor: cBlack.withOpacity(0.5),
+                          content: const Center(
+                            child: TextWidget(
+                              text: 'No Slots Available',
+                              colorText: cwhite,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                   : () async {
                       showDialog(
                         context: context,
@@ -120,7 +133,6 @@ class ScreenApointment extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () async {
-                                  
                                   log('wallet clicked');
                                   bool status = await walletPayment(
                                       id,
@@ -139,10 +151,10 @@ class ScreenApointment extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                          const  ScreenPaymentSucsess(),
+                                            const ScreenPaymentSucsess(),
                                       ),
                                     );
-                                  }else{
+                                  } else {
                                     // ignore: use_build_context_synchronously
                                     Navigator.pop(context);
                                   }
@@ -169,10 +181,10 @@ class ScreenApointment extends StatelessWidget {
                                         :
 
                                         // ignore: use_build_context_synchronously
-                                       paymentProvider.openCheckout(order);
-                                        log(paymentProvider.isSuccess.toString());
+                                        paymentProvider.openCheckout(order);
+                                   
 
-                                    if (paymentProvider.isSuccess == true) {
+                                    if (paymentProvider.isSucess == true) {
                                       // ignore: use_build_context_synchronously
                                       Navigator.push(
                                         context,
@@ -181,10 +193,9 @@ class ScreenApointment extends StatelessWidget {
                                               const ScreenPaymentSucsess(),
                                         ),
                                       );
-                                      paymentProvider.isSuccess = false;
+                                      
                                     }
 
-                                    
                                     // paymentProvider.disposeRazorpay();
                                   },
                                   child: const Text('Other'),

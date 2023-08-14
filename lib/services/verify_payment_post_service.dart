@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:user_side_flutter/utils/constants/api_configuration.dart';
 
 import '../utils/constants/secure_storage_read.dart';
-
+bool? successnavigate =false;
 Future<void> verifyPayment(
     String apoinmentid,dynamic response) async {
   dynamic key = await readToken();
@@ -29,11 +29,14 @@ Future<void> verifyPayment(
     );
    
     if(response.statusCode ==200){
+      successnavigate =true;
       log('verify payment successfull');
     }else{
+      successnavigate =false;
       log('verify payment failed with an ${response.statusCode}');
     }
   } catch (e) {
+    successnavigate =false;
     log('verify payment failed with an exception $e');
   }
 }

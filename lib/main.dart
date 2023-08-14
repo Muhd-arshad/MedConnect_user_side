@@ -4,6 +4,7 @@ import 'package:user_side_flutter/controller/booking_details_get_controller.dart
 import 'package:user_side_flutter/controller/department_get_controller.dart';
 import 'package:user_side_flutter/controller/filter_list_based_on_department.dart';
 import 'package:user_side_flutter/controller/get_user_profile_controller.dart';
+import 'package:user_side_flutter/controller/loading_controller.dart';
 import 'package:user_side_flutter/controller/schedule_apoinment.dart';
 import 'package:user_side_flutter/controller/user_chat_get_controller.dart';
 import 'package:user_side_flutter/controller/user_login_contoller.dart';
@@ -53,7 +54,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => GetDoctorMessageProvider(),
         ),
-      
+        ChangeNotifierProvider(
+          create: (context) => LoadingController(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

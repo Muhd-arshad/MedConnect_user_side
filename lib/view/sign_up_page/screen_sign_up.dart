@@ -1,7 +1,9 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:user_side_flutter/controller/user_signup_controller.dart';
+import 'package:user_side_flutter/utils/constants/color.dart';
 import 'package:user_side_flutter/view/otp_verification/screenotp.dart';
 import '../../utils/constants/sizedbox.dart';
 import '../widgets/buttonwidget.dart';
@@ -72,26 +74,52 @@ class ScreenSignUp extends StatelessWidget {
                         controller: signupProvider.confirmpasswordcontroller,
                         labelText: 'Confirm Password'),
                     height20,
-                    signupProvider.isloading == true ? const Center(child:  CircularProgressIndicator()):
-                    ButtonWidget(
-                        text: 'Sign Up',
-                        onPressed: () async { 
-                          signupProvider.isloading = true;
-                          bool status =
-                              await signupProvider.userSignup(context);
-                        
-                          if (status == true) {
-                            // ignore: use_build_context_synchronously
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ScreenOtpPage(),
-                              ),
-                            );
-                          }
-                        },
-                        height: 50,
-                        width: 150)
+                    signupProvider.isloading == true
+                        ? const Center(child: CircularProgressIndicator())
+                        : ButtonWidget(
+                            text: 'Sign Up',
+                            onPressed: () async {
+                              log('singup button clicked');
+                              log(signupProvider.passwordcontroller.text);
+                              log(signupProvider
+                                  .confirmpasswordcontroller.text);
+                              if (signupProvider.passwordcontroller.text ==
+                                  signupProvider
+                                      .confirmpasswordcontroller.text) {
+                                bool status =
+                                    await signupProvider.userSignup(context);
+
+                                if (status == true) {
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ScreenOtpPage(),
+                                    ),
+                                  );
+                                }
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.red,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    content: const Center(
+                                      child: TextWidget(
+                                        size: 18,
+                                        text: 'Password not matching',
+                                        colorText: cwhite,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            height: 50,
+                            width: 150)
                   ],
                 ),
               );
